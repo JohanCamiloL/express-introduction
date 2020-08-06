@@ -17,19 +17,19 @@ const alumnos = [
  * Get request with query params.
  * This methos searches for students by the given course and student name.
  */
-app.get('/acamica/:comision/alumnos', (req, res) => {
-    const { comision } = req.params;
-    const { nombre } = req.query;
+app.get('/acamica/:course/alumnos', (req, res) => {
+    const { course } = req.params;
+    const { name } = req.query;
 
-    if (comisiones.includes(comision)) {
-        const studentsByCourse = getStudentsByCourse(comision);
-        const studentsByNameAndCourse = getStudentsByName(nombre, studentsByCourse);
+    if (comisiones.includes(course)) {
+        const studentsByCourse = getStudentsByCourse(course);
+        const studentsByNameAndCourse = getStudentsByName(name, studentsByCourse);
 
         res.status(200)
-            .json({ students: (nombre ? studentsByNameAndCourse : studentsByCourse) })
+            .json({ students: (name ? studentsByNameAndCourse : studentsByCourse) })
     } else {
         res.status(404)
-            .json({ message: `The course ${comision} doesn't exists` });
+            .json({ message: `The course ${course} doesn't exists` });
     }
 });
 
@@ -37,13 +37,13 @@ app.get('/acamica/:comision/alumnos', (req, res) => {
  * Get request without query params.
  * This method searches for students by the given course and id by its params.
  */
-app.get('/acamica/:comision/alumnos/:alumnoId', (req, res) => {
-    const { comision, alumnoId } = req.params;
+app.get('/acamica/:course/alumnos/:studentId', (req, res) => {
+    const { course, studentId } = req.params;
 
-    if (comisiones.includes(comision)) {
-        if (isNaN(alumnoId)) {
-            const studentsByCourse = getStudentsByCourse(comision);
-            const student = getStudentById(alumnoId, studentsByCourse);
+    if (comisiones.includes(course)) {
+        if (isNaN(studentId)) {
+            const studentsByCourse = getStudentsByCourse(course);
+            const student = getStudentById(studentId, studentsByCourse);
 
             res.status(200)
                 .json({ student: student });
@@ -53,7 +53,7 @@ app.get('/acamica/:comision/alumnos/:alumnoId', (req, res) => {
         }
     } else {
         res.status(404)
-            .json({ message: `The course ${comision} doesn't exists` });
+            .json({ message: `The course ${course} doesn't exists` });
     }
 });
 
