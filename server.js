@@ -36,7 +36,7 @@ app.get('/acamica/:comision/alumnos/:alumnoId', (req, res) => {
 
     if (comisiones.includes(comision)) {
         res.status(200)
-            .json(alumnos.find(alumno => alumno.comision === comision && alumno.id === alumnoId));
+            .json({ student: alumnos.find(alumno => (alumno.comision === comision && alumno.id == alumnoId)) });
     } else {
         res.status(404)
             .json({ message: "Esta comision no existe" });
