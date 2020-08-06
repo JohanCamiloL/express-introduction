@@ -1,5 +1,4 @@
 const express = require('express');
-
 const app = express();
 
 const comisiones = ['dwfs', 'dwa', 'bigdata'];
@@ -42,14 +41,14 @@ app.get('/acamica/:course/alumnos/:studentId', (req, res) => {
 
     if (comisiones.includes(course)) {
         if (isNaN(studentId)) {
+            res.status(404)
+                .json({ message: 'The userId should be a number' });
+        } else {
             const studentsByCourse = getStudentsByCourse(course);
-            const student = getStudentById(studentId, studentsByCourse);
+            const student = getStudentById(parseInt(studentId), studentsByCourse);
 
             res.status(200)
                 .json({ student: student });
-        } else {
-            res.status(404)
-                .json({ message: 'The userId should be a number' });
         }
     } else {
         res.status(404)
