@@ -3,7 +3,7 @@ const app = express();
 
 const comisiones = ['dwfs', 'dwa', 'bigdata'];
 
-const alumnos = [
+let alumnos = [
     { id: 1, name: 'Carlos', comision: 'dwfs' },
     { id: 2, name: 'Andres', comision: 'dwa' },
     { id: 3, name: 'Maria', comision: 'bigdata' },
@@ -53,6 +53,27 @@ app.get('/acamica/:course/alumnos/:studentId', (req, res) => {
     } else {
         res.status(404)
             .json({ message: `The course ${course} doesn't exists` });
+    }
+});
+
+/**
+ * Delete request without query params.
+ * Deletes an student by its id that belongs to the given course.
+ */
+app.delete('/acamica/:course/alumnos/:studentId', (req, res) => {
+    const { course, studentId } = req.params;
+
+    const studentsByCourse = getStudentsByCourse(course);
+    const student = getStudentById(parseInt(studentId), studentsByCourse);
+
+    if (student) {
+        alumnos = alumnos.filter(alumno => alumno.id !== parseInt(studentId));
+
+        res.status(200)
+            .json({ student });
+    } else {
+        res.status(404)
+            .json({ message: `The user with the id ${studentId} doesn't belong to the course ${course}` });
     }
 });
 
