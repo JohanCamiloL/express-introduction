@@ -44,18 +44,25 @@ app.get('/acamica/:comision/alumnos/:alumnoId', (req, res) => {
 });
 
 /**
- * Get student by its id
- * @param {Number} id Student id
+ * Gets all students on a given course.
+ * @param {String} course Course name.
+ * @returns {Array} Students array.
  */
-const getStudentById = (id) => {
-    for (let alumno of alumnos) {
-        if (alumno.id == id) {
-            return alumno;
-        }
-    }
+const getStudentsByCourse = (course) => alumnos.filter(alumno => alumno.comision === course);
 
-    return { student: null };
-}
+/**
+ * Get all students by the given name.
+ * @param {String} name Students name.
+ * @returns {Array} Students array.
+ */
+const getStudentsByName = (name) => alumnos.filter(alumno => alumno.name === name);
+
+/**
+ * Get student by its id.
+ * @param {Number} studentId Student id.
+ * @returns {Object} Student object
+ */
+const getStudentById = (studentId) => alumnos.find(alumno => alumno.id === studentId);
 
 app.listen(3000, () => {
     console.log('Servidor escuchando en puerto 3000');
